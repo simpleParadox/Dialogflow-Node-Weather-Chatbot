@@ -1,1 +1,1 @@
-# A DialogFlow based Node.js Weather Chatbot.
+# A DialogFlow and Node.js based weather chatbot.
