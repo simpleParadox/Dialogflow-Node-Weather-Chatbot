@@ -13,9 +13,6 @@ const sessionClient = new dialogflow.SessionsClient();
 const sessionPath = sessionClient.sessionPath(projectId, sessionId);
 
 // The text query request.
-
-
-
 const query = process.argv[2];
 
 const req = {
@@ -30,6 +27,8 @@ const req = {
 
 // Send request and log result
 
+prev_req_city_name = null;
+
 sessionClient
   .detectIntent(req)
   .then(responses => {
@@ -40,11 +39,16 @@ sessionClient
 
     // Now use the city to find the weather.
     var city_name = result.fulfillmentText;
-    if (city_name.includes('geo')) {
+    console.log(city_name);
+    if (prev_req_city_name==null && (city_name==undefined || city_name.startsWith("For what city"))) {
       console.log('Invalid Request, please enter the name of the city to retrieve weather !!');
     }
     else {
-      var url = `http://api.openweathermap.org/data/2.5/weather?q=${city_name}&units=metric&APPID=${key.key}`;
+      if(prev_req_city_name!=city_name && !(city_name.startsWith("For what city") || city_name.startsWith("Sorry"))){
+        prev_req_city_name = city_name;
+      }
+      var url = `http://api.openweathermap.org/data/2.5/weather?q=${prev_req_city_name}&units=metric&APPID=${key.key}`;
+      console.log(url);
       request(url, (error, response, body) => {
         var body = JSON.parse(response.body);
         try{
