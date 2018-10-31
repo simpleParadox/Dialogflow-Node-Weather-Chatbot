@@ -39,7 +39,6 @@ sessionClient
 
     // Now use the city to find the weather.
     var city_name = result.fulfillmentText;
-    console.log(city_name);
     if (prev_req_city_name==null && (city_name==undefined || city_name.startsWith("For what city"))) {
       console.log('Invalid Request, please enter the name of the city to retrieve weather !!');
     }
